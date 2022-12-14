@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
+import date from "date-and-time";
 
 const pool = require("../../core/database/pool");
 const roles = require("../../core/data/roles");
-const bcrypt_compare = require("../../core/bcrypt/compare");
 const bcrypt_hash = require("../../core/bcrypt/hash");
 
 let router = express.Router();
@@ -43,21 +43,88 @@ router.use(express.json());
 
 router.post("/", async (req: Request, res: Response) => {
   let body = req.body;
+  let date_time_now = new Date();
+
+  let items = [
+    body.username,
+    body.name,
+    body.firstname,
+    body.lastname,
+    body.email,
+    body.description,
+    body.password,
+    body.age,
+  ];
+
+  for (let i = 0; i < items.length; i++) {
+    if (items[i] === undefined || items[i] === "") {
+      return res.status(400).send({ detail: "Provide all values" });
+    }
+  }
 
   let user_data = {
-    uuid: uuidv4(),
-    username: body.username,
-    firstname: body.firstname,
-    lastname: body.lastname,
-    email: body.email,
-    password: await bcrypt_hash(body.password),
-    role: roles.BASIC,
-    age: body.age,
+    uuid: uuidv4(), // string
+    username: body.username, // string, must be unique
+    name: body.name, // string, this can be the same
+    firstname: body.firstname, // string
+    lastname: body.lastname, // string
+    email: body.email, // string
+    password: await bcrypt_hash(body.password), // string
+    description: body.description, // string
+    role: roles.BASIC, // string
+    age: body.age, // int8
+    following: {}, // json
+    followers: {}, // json
+    posts: {}, // json
+    join_date: date.format(date_time_now, "YYYY/MM/DD HH:mm:ss"), // string
   };
 
-  console.log(user_data);
+  let query_check_username_exists = "SELECT * FROM users WHERE username=$1";
+  let values_check_username_exists = [user_data.username];
 
-  console.log(await bcrypt_compare(body.password, user_data.password));
+  pool.query(
+    query_check_username_exists,
+    values_check_username_exists,
+    (err: any, sql_res: any) => {
+      if (err) return res.status(500).send({ detail: err.stack });
+
+      if (sql_res.rowCount !== 0)
+        return res
+          .status(406)
+          .send({ detail: "Someone with that username exists." });
+
+      let query_insert_user_into_table =
+        "INSERT INTO users (uuid, username, name, firstname, lastname, email, password, description, role, age, following, followers, posts, join_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)";
+      let values_insert_user_into_table = [
+        user_data.uuid,
+        user_data.username,
+        user_data.name,
+        user_data.firstname,
+        user_data.lastname,
+        user_data.email,
+        user_data.password,
+        user_data.description,
+        user_data.role,
+        user_data.age,
+        user_data.following,
+        user_data.followers,
+        user_data.posts,
+        user_data.join_date,
+      ];
+
+      pool.query(
+        query_insert_user_into_table,
+        values_insert_user_into_table,
+        (err_insert: any, sql_res_insert: any) => {
+          if (err_insert) return res.status(500).send({ detail: err.stack });
+
+          res.status(201).send({
+            detail: `Successfully created user ${user_data.username}`,
+          });
+        }
+      );
+    }
+  );
 });
 
 // Exporting the module, so we can use it from the main file
