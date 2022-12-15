@@ -85,10 +85,10 @@ router.post("/", async (req: Request, res: Response) => {
   pool.query(
     query_check_username_exists,
     values_check_username_exists,
-    (err: any, sql_res: any) => {
-      if (err) return res.status(500).send({ detail: err.stack });
+    (err_exists: any, sql_res_exists: any) => {
+      if (err_exists) return res.status(500).send({ detail: err_exists.stack });
 
-      if (sql_res.rowCount !== 0)
+      if (sql_res_exists.rowCount !== 0)
         return res
           .status(406)
           .send({ detail: "Someone with that username exists." });
@@ -116,7 +116,8 @@ router.post("/", async (req: Request, res: Response) => {
         query_insert_user_into_table,
         values_insert_user_into_table,
         (err_insert: any, sql_res_insert: any) => {
-          if (err_insert) return res.status(500).send({ detail: err.stack });
+          if (err_insert)
+            return res.status(500).send({ detail: err_insert.stack });
 
           res.status(201).send({
             detail: `Successfully created user ${user_data.username}`,

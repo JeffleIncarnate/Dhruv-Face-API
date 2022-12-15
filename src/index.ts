@@ -9,6 +9,8 @@ const get_all_users = require("./routes/get/get_all_users");
 // Routes -- POST
 // POST -- CREATE USER
 const create_user = require("./routes/post/create_user");
+// POST -- USER LOGIN
+const user_login = require("./routes/post/user_login");
 
 // Use Routes -- GET
 // USE GET -- GET ALL USERS
@@ -17,6 +19,8 @@ app.use("/get/get_all_users", get_all_users);
 // Use Routes -- POST
 // USE POST -- CREATE USER
 app.use("/post/create_user", create_user);
+// USE POST -- USER LOGIN
+app.use("/post/user_login", user_login);
 
 app.get("/", (req: Request, res: Response) => {
   res.send({ detail: "Welcome to the Dhruv-Face API!" });
@@ -24,7 +28,7 @@ app.get("/", (req: Request, res: Response) => {
 
 // Fallback
 app.all("*", (req: Request, res: Response) => {
-  res.send({
+  res.status(404).send({
     detail: "This endpoint does not exist, please pick one that does",
   });
 });
