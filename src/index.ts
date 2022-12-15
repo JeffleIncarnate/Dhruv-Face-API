@@ -5,6 +5,8 @@ let port: number = 3000;
 // Routes -- GET
 // GET -- GET ALL USERS
 const get_all_users = require("./routes/get/get_all_users");
+// GET -- GET SPECIFIC USER
+const get_specific_user = require("./routes/get/get_specific_user");
 
 // Routes -- POST
 // POST -- CREATE USER
@@ -15,6 +17,8 @@ const user_login = require("./routes/post/user_login");
 // Use Routes -- GET
 // USE GET -- GET ALL USERS
 app.use("/get/get_all_users", get_all_users);
+// USE GET -- GET SPECIFIC USE
+app.use("/get/get_specific_user", get_specific_user);
 
 // Use Routes -- POST
 // USE POST -- CREATE USER
