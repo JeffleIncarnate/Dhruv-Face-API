@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import { send } from "process";
 
 const pool = require("../../core/database/pool");
 const bcrypt_compare = require("../../core/bcrypt/compare");
@@ -51,6 +50,9 @@ router.put("/", async (req: Request, res: Response) => {
     query_get_password,
     values_get_password
   );
+
+  if (res_get_password.rowCount === 0)
+    return res.send(400).send({ detial: "User does not exist" });
 
   if (!bcrypt_compare(user.password, res_get_password.rows[0].password))
     return res.status(400).send({ detail: "Incorrect password" });
