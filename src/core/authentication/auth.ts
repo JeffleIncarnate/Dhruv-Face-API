@@ -7,8 +7,8 @@ let authenticate_token: (req: any, res: Response, next: NextFunction) => any = (
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; // Splitting because it goes: "Bearer [space] TOKEN"
+  const auth_header = req.headers["authorization"];
+  const token = auth_header && auth_header.split(" ")[1]; // Splitting because it goes: "Bearer [space] TOKEN"
   if (token === null) return res.sendStatus(401);
 
   // Verify the token
