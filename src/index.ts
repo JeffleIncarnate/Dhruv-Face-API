@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from "express";
 const app: Application = express();
+let authenticate_token = require("./core/authentication/auth");
 
 let port: number = 3000;
 
@@ -24,6 +25,11 @@ const delete_user = require("./routes/delete/delete_user");
 // Routes -- PUT
 const update_user = require("./routes/put/update_user");
 
+// ---------------------------- //
+
+// Routes -- AUTH
+const login = require("./core/authentication/login");
+
 // ----------------------------------------------------------------------- //
 
 // Use Routes -- GET
@@ -47,8 +53,13 @@ app.use("/delete/delete_user", delete_user);
 // Use Routes -- PUT
 app.use("/put/update_user", update_user);
 
+// ---------------------------- //
+
+// Use Routes --- AUTH
+app.use("/auth/login", login);
+
 // Base endpoint
-app.get("/", (req: Request, res: Response) => {
+app.get("/", authenticate_token, (req: Request, res: Response) => {
   res.send({ detail: "Welcome to the Dhruv-Face API!" });
 });
 
