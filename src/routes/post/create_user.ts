@@ -73,9 +73,9 @@ router.post("/", async (req: Request, res: Response) => {
     description: body.description, // string
     role: roles.BASIC, // string
     age: body.age, // int8
-    following: {}, // json
-    followers: {}, // json
-    posts: {}, // json
+    following: [], // json
+    followers: [], // json
+    posts: [], // json
     join_date: date.format(date_time_now, "YYYY/MM/DD HH:mm:ss"), // string
   };
 
