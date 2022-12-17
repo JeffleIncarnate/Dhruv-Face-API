@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import { json } from "stream/consumers";
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
@@ -9,7 +8,7 @@ let router = express.Router();
 
 router.use(express.json());
 
-// Custom UserDelete type
+// Custom Post type
 type Post = {
   description: string;
   tags: string[];
@@ -18,7 +17,6 @@ type Post = {
 };
 
 // note: Make middleware to check all items, to make sure they are not undefined, or just an empty string
-
 router.post("/", upload.array("files"), (req: any, res: Response) => {
   let post: Post = {
     description: req.body.description,
