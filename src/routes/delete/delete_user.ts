@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 
 const pool = require("../../core/database/pool");
-let bcrypt_compare = require("../../core/bcrypt/compare");
+const bcrypt_compare = require("../../core/bcrypt/compare");
+const authenticate_token = require("../../core/authentication/auth");
 
 let router = express.Router();
 
@@ -13,7 +14,7 @@ type UserDelete = {
   password: string;
 };
 
-router.delete("/", (req: Request, res: Response) => {
+router.delete("/", authenticate_token, (req: Request, res: Response) => {
   let body = req.body;
 
   let user: UserDelete = {

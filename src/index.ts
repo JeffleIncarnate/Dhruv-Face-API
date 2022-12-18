@@ -59,7 +59,7 @@ app.use("/put/update_user", update_user);
 app.use("/auth/login", login);
 
 // Base endpoint
-app.get("/", authenticate_token, (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response) => {
   res.send({ detail: "Welcome to the Dhruv-Face API!" });
 });
 

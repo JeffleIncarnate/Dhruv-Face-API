@@ -5,6 +5,7 @@ import date from "date-and-time";
 const pool = require("../../core/database/pool");
 const roles = require("../../core/data/roles");
 const bcrypt_hash = require("../../core/bcrypt/hash");
+const authenticate_token = require("../../core/authentication/auth");
 
 let router = express.Router();
 
@@ -41,7 +42,7 @@ class User {
 
 router.use(express.json());
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", authenticate_token, async (req: Request, res: Response) => {
   let body = req.body;
   let date_time_now = new Date();
 

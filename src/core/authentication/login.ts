@@ -16,29 +16,44 @@ type UserToken = {
   password: string;
 };
 
+type PostUser = {
+  username: string;
+  role: string;
+};
+
 type Token = {
   token: string;
 };
 
 router.post("/", async (req: Request, res: Response) => {
-  // Querying the database
   let query_get_password = "select password, role from users where username=$1";
   let values_get_password = [req.body.username];
 
   let items = [req.body.username, req.body.password];
 
-  for (let i = 0; i < items.length; i++) {
+  for (let i = 0; i < items.length; i++)
     if (items[i] === undefined || items[i] === "")
       return res.send({ detail: "Provide all values" });
-  }
 
   let sql_res_get_pass = await pool.query(
     query_get_password,
     values_get_password
   );
 
-  if (sql_res_get_pass.rowCount === 0)
-    return res.status(400).send({ detail: "User does not exist" });
+  if (sql_res_get_pass.rowCount === 0) {
+    let user: PostUser = {
+      username: req.body.username,
+      role: roles.CREATE_USER,
+    };
+
+    let access_token: Token = {
+      token: generateAccessToken(user),
+    };
+
+    console.log("created user with token: " + user.role);
+
+    return res.send({ accessToken: access_token.token });
+  }
 
   if (
     !(await bcrypt_compare(
@@ -61,11 +76,11 @@ router.post("/", async (req: Request, res: Response) => {
 
   console.log("created user with token: " + user.role);
 
-  res.send({ accessToken: access_token.token });
+  return res.send({ accessToken: access_token.token });
 });
 
 // Function to generate the access token.
-function generateAccessToken(user: UserToken) {
+function generateAccessToken(user: UserToken | PostUser) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
 }
 

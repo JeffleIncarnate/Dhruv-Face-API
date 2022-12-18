@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 
 const pool = require("../../core/database/pool");
 const bcrypt_compare = require("../../core/bcrypt/compare");
+const authenticate_token = require("../../core/authentication/auth");
 
 let router = express.Router();
 
@@ -14,7 +15,7 @@ type User = {
   change_to: string;
 };
 
-router.put("/", async (req: Request, res: Response) => {
+router.put("/", authenticate_token, async (req: Request, res: Response) => {
   let column_exists = false;
 
   let user: User = {

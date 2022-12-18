@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 
 const pool = require("../../core/database/pool");
 const bcrypt_compare = require("../../core/bcrypt/compare");
+const authenticate_token = require("../../core/authentication/auth");
 
 let router = express.Router();
 
@@ -12,7 +13,7 @@ type UserLogin = {
   password: string;
 };
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", authenticate_token, async (req: Request, res: Response) => {
   let body = req.body;
 
   let user: UserLogin = {
