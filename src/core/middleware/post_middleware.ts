@@ -29,12 +29,6 @@ let create_post: (
   res: Response,
   next: NextFunction
 ) => {
-  let values = {
-    description: req.body.description,
-    tags: req.body.tags,
-    likes: 0,
-  };
-
   if (!(await verify_password(req.user.username, req.user.password)))
     return res.status(400).send({ detail: "passwords are not equal." });
 
@@ -73,7 +67,48 @@ let create_user: (req: Request, res: Response, next: NextFunction) => any = (
   next();
 };
 
+let user_login: (req: Request, res: Response, next: NextFunction) => any = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  let authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  let decode = decode_token(token).username;
+
+  return decode === req.body.username
+    ? next()
+    : res.status(400).send({ detail: "Token is the same as user" });
+};
+
+let verify_email_create_user: (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => any = (req: Request, res: Response, next: NextFunction) => {
+  let authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  let decode = decode_token(token);
+
+  if (decode.username !== req.body.username)
+    return res
+      .status(400)
+      .send({ detail: "Body username is not the same as the token username" });
+
+  if (decode.role !== roles.CREATE_USER)
+    return res
+      .status(400)
+      .send({ detail: "Token role is not correct must be `create_user`" });
+
+  next();
+};
+
 module.exports = {
   create_post,
   create_user_no_verification,
+  create_user,
+  user_login,
+  verify_email_create_user,
 };
