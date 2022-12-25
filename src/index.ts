@@ -13,6 +13,7 @@ const get_specific_user = require("./routes/get/get_specific_user");
 // ---------------------------- //
 
 // Routes -- POST
+const create_user_no_verification = require("./routes/post/create_user_no_verification");
 const verify_email_create_user = require("./routes/post/verify_email_create_user");
 const create_user = require("./routes/post/create_user");
 const user_login = require("./routes/post/user_login");
@@ -42,6 +43,7 @@ app.use("/get/get_specific_user", get_specific_user);
 // ---------------------------- //
 
 // Use Routes -- POST
+app.use("/post/create_user_no_verification", create_user_no_verification);
 app.use("/post/verify_email_create_user", verify_email_create_user);
 app.use("/post/create_user", create_user);
 app.use("/post/user_login", user_login);
