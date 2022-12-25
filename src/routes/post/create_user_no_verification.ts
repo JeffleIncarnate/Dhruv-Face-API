@@ -7,6 +7,7 @@ const roles = require("../../core/data/roles");
 const bcrypt_hash = require("../../core/bcrypt/hash");
 const authenticate_token = require("../../core/authentication/auth");
 const decode_token = require("../../core/jwt/decrypt_token");
+const middleware = require("../../core/middleware/post_middleware");
 
 let router = express.Router();
 
@@ -30,28 +31,10 @@ type User = {
   join_date: string;
 };
 
-// temporaty middleware
-let middleware: (req: Request, res: Response, next: NextFunction) => any = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  let authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-
-  let decode = decode_token(token).role;
-
-  if (decode !== roles.GOD && decode !== roles.ADMIN) {
-    return res.status(401).send({ detail: "You need to be ADMIN or higher" });
-  }
-
-  next();
-};
-
 router.post(
   "/",
   authenticate_token,
-  middleware,
+  middleware.create_user_no_verification,
   async (req: Request, res: Response) => {
     let body = req.body;
     let date_time_now = new Date();

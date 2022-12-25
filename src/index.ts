@@ -5,6 +5,7 @@ const app: Application = express();
 let port: number = 3000;
 
 app.use(cors());
+app.use(express.json());
 
 // Routes -- GET
 const get_all_users = require("./routes/get/get_all_users");
