@@ -49,7 +49,6 @@ router.post(
             JSON.stringify(current_json.concat([post])).replace(`'`, `"`)
           )
         );
-        console.log(new_json);
 
         let query_update_posts = "UPDATE users SET posts=$1 WHERE username=$2";
         let values_update_posts = [new_json, req.body.username];

@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { devNull } from "os";
 
 const roles = require("../data/roles");
 const decode_token = require("../jwt/decrypt_token");

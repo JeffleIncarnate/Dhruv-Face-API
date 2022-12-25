@@ -1,8 +1,10 @@
 import express, { Application, Request, Response } from "express";
+const cors = require("cors");
 const app: Application = express();
-let authenticate_token = require("./core/authentication/auth");
 
 let port: number = 3000;
+
+app.use(cors());
 
 // Routes -- GET
 const get_all_users = require("./routes/get/get_all_users");
@@ -11,6 +13,7 @@ const get_specific_user = require("./routes/get/get_specific_user");
 // ---------------------------- //
 
 // Routes -- POST
+const verify_email_create_user = require("./routes/post/verify_email_create_user");
 const create_user = require("./routes/post/create_user");
 const user_login = require("./routes/post/user_login");
 const create_post = require("./routes/post/create_post");
@@ -39,6 +42,7 @@ app.use("/get/get_specific_user", get_specific_user);
 // ---------------------------- //
 
 // Use Routes -- POST
+app.use("/post/verify_email_create_user", verify_email_create_user);
 app.use("/post/create_user", create_user);
 app.use("/post/user_login", user_login);
 app.use("/post/create_post", create_post);

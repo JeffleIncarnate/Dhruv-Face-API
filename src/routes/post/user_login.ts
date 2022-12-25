@@ -23,10 +23,9 @@ router.post("/", authenticate_token, async (req: Request, res: Response) => {
 
   let values_body = [body.username, body.password];
 
-  for (let i = 0; i < values_body.length; i++) {
+  for (let i = 0; i < values_body.length; i++)
     if (values_body[i] === "" || values_body[i] === undefined)
       return res.status(400).send({ detail: "Provide all items" });
-  }
 
   let query_get_password = "SELECT password FROM users WHERE username=$1";
   let values_get_password = [user.username];
