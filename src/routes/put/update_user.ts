@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 
 import { pool } from "../../core/database/pool";
-const bcrypt_compare = require("../../core/bcrypt/compare");
-const authenticate_token = require("../../core/authentication/auth");
+import { bcrypt_compare } from "../../core/bcrypt/compare";
+import { authenticate_token } from "../../core/authentication/auth";
 import { update_user } from "../../core/middleware/put_middleware";
 
 let router = express.Router();

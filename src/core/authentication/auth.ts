@@ -2,11 +2,11 @@ import { Response, NextFunction } from "express";
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: `${__dirname}/../../.env` });
 
-let authenticate_token: (req: any, res: Response, next: NextFunction) => any = (
+export let authenticate_token: (
   req: any,
   res: Response,
   next: NextFunction
-) => {
+) => any = (req: any, res: Response, next: NextFunction) => {
   const auth_header = req.headers["authorization"];
   const token = auth_header && auth_header.split(" ")[1]; // Splitting because it goes: "Bearer [space] TOKEN"
   if (token === null) return res.sendStatus(401);
@@ -19,6 +19,3 @@ let authenticate_token: (req: any, res: Response, next: NextFunction) => any = (
     next();
   });
 };
-
-// Exporting this, so we can use it in any file.
-module.exports = authenticate_token;

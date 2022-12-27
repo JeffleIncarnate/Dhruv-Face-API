@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 
-const roles = require("../data/roles");
+import { roles } from "../data/roles";
 import { pool } from "../database/pool";
-const decode_token = require("../jwt/decrypt_token");
+import { decode_token } from "../jwt/decrypt_token";
 
 export let verify_password: (
   username: string,
@@ -39,7 +39,7 @@ export let create_user_no_verification: (
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  let decode = decode_token(token).role;
+  let decode = decode_token(token!).role;
 
   if (decode !== roles.GOD && decode !== roles.ADMIN)
     return res.status(401).send({ detail: "You need to be ADMIN or higher" });
@@ -55,7 +55,7 @@ export let create_user: (
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  let decode = decode_token(token).role;
+  let decode = decode_token(token!).role;
 
   if (decode !== roles.CREATE_USER)
     return res.status(401).send({ detial: "Incorrect token" });
@@ -71,7 +71,7 @@ export let user_login: (
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  let decode = decode_token(token).username;
+  let decode = decode_token(token!).username;
 
   return decode === req.body.username
     ? next()
@@ -86,7 +86,7 @@ export let verify_email_create_user: (
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  let decode = decode_token(token);
+  let decode = decode_token(token!);
 
   if (decode.role === roles.GOD || decode.role === roles.ADMIN) return next();
 
@@ -111,7 +111,7 @@ export let create_admin: (
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  let decode = decode_token(token).role;
+  let decode = decode_token(token!).role;
 
   if (decode !== roles.GOD)
     return res.status(401).send({ detail: "You need to be GOD" });

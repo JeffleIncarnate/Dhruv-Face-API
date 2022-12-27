@@ -1,9 +1,12 @@
 let bc = require("bcrypt");
 
-let hash_password: (password: string) => Promise<string> = (
+/**
+ * Hashs a password 12 times with the bcrypt blowfish hash (Haha blow joke) with a random salt. This is an async function
+ * @param  {string} password             Not the hashed password
+ * @return {Promise<string>}             This is the awaited hashed password
+ */
+export let bcrypt_hash: (password: string) => Promise<string> = async (
   password: string
 ) => {
-  return bc.hash(password, 12);
+  return await bc.hash(password, 12);
 };
-
-module.exports = hash_password;

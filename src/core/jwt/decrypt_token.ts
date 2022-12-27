@@ -1,8 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-let decode_token: (token: string) => any = (token: string) => {
-  let decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  return decoded;
+export let decode_token: (token: string) => any = (token: string) => {
+  return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 };
-
-module.exports = decode_token;

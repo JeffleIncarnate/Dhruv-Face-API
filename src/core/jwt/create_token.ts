@@ -30,10 +30,8 @@ type User = {
   join_date: string;
 };
 
-let generate_access_token: (user: UserToken | PostUser | User) => any = (
+export let create_token: (user: UserToken | PostUser | User) => any = (
   user: UserToken | PostUser
 ) => {
   return jsonewebtoken.sign(user, process.env.ACCESS_TOKEN_SECRET);
 };
-
-module.exports = generate_access_token;

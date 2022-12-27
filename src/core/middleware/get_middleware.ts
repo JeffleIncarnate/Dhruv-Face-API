@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-const roles = require("../data/roles");
-const decode_token = require("../jwt/decrypt_token");
+import { roles } from "../data/roles";
+import { decode_token } from "../jwt/decrypt_token";
 
 export let get_all_users: (
   req: Request,
@@ -11,7 +11,7 @@ export let get_all_users: (
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  let decode = decode_token(token).role;
+  let decode = decode_token(token!).role;
 
   if (decode !== roles.GOD && decode !== roles.ADMIN)
     return res.status(401).send({ detail: "Incorrect role" });
@@ -27,7 +27,7 @@ export let get_specific_user: (
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  let decode = decode_token(token);
+  let decode = decode_token(token!);
 
   if (decode.role === roles.CREATE_USER)
     return res.status(401).send({ detail: "Incorrect role" });

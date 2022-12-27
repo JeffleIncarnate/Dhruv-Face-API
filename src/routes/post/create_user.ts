@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
 
 import { pool } from "../../core/database/pool";
-const roles = require("../../core/data/roles");
-const authenticate_token = require("../../core/authentication/auth");
-const decode_token = require("../../core/jwt/decrypt_token");
+import { roles } from "../../core/data/roles";
+import { authenticate_token } from "../../core/authentication/auth";
+import { decode_token } from "../../core/jwt/decrypt_token";
 import { create_user } from "../../core/middleware/post_middleware";
 
 let router = express.Router();
@@ -36,7 +36,7 @@ router.post(
     let authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
-    let user_data: User = decode_token(token);
+    let user_data: User = decode_token(token!);
 
     user_data.role = roles.BASIC;
 

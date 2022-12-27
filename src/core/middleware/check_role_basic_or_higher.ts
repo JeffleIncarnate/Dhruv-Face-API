@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-const roles = require("../data/roles");
-const decode_token = require("../jwt/decrypt_token");
+import { roles } from "../data/roles";
+import { decode_token } from "../jwt/decrypt_token";
 
 export let check_role_basic_or_higher: (
   req: Request,
@@ -11,7 +11,7 @@ export let check_role_basic_or_higher: (
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  let decode = decode_token(token).role;
+  let decode = decode_token(token!).role;
 
   if (decode === roles.CREATE_USER)
     return res

@@ -2,8 +2,9 @@ import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
 import { pool } from "../../core/database/pool";
-const roles = require("../../core/data/roles");
-const authenticate_token = require("../../core/authentication/auth");
+import { roles } from "../../core/data/roles";
+import { bcrypt_hash } from "../../core/bcrypt/hash";
+import { authenticate_token } from "../../core/authentication/auth";
 import { create_admin } from "../../core/middleware/post_middleware";
 
 let router = express.Router();
@@ -47,7 +48,7 @@ router.post(
       firstname: body.firstname,
       lastname: body.lastname,
       phonenumber: body.phonenumber,
-      password: body.password,
+      password: await bcrypt_hash(body.password),
       age: body.age,
       role: roles.GOD,
     };

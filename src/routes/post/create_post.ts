@@ -3,7 +3,7 @@ const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
 import { pool } from "../../core/database/pool";
-const authenticate_token = require("../../core/authentication/auth");
+import { authenticate_token } from "../../core/authentication/auth";
 import { create_post } from "../../core/middleware/post_middleware";
 
 let router = express.Router();

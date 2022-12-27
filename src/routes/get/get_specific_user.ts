@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 
 import { pool } from "../../core/database/pool";
-const authenticate_token = require("../../core/authentication/auth");
+import { authenticate_token } from "../../core/authentication/auth";
 import { get_specific_user } from "../../core/middleware/get_middleware";
 
 let router = express.Router();

@@ -2,9 +2,9 @@ import express, { Request, Response } from "express";
 require("dotenv").config({ path: "../../.env" });
 
 import { pool } from "../database/pool";
-let bcrypt_compare = require("../bcrypt/compare");
-let roles = require("../data/roles");
-let create_token = require("../jwt/create_token");
+import { bcrypt_compare } from "../bcrypt/compare";
+import { roles } from "../data/roles";
+import { create_token } from "../jwt/create_token";
 
 let router = express.Router();
 
