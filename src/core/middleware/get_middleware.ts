@@ -3,11 +3,11 @@ import { Request, Response, NextFunction } from "express";
 const roles = require("../data/roles");
 const decode_token = require("../jwt/decrypt_token");
 
-let get_all_users: (req: Request, res: Response, next: NextFunction) => any = (
+export let get_all_users: (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+) => any = (req: Request, res: Response, next: NextFunction) => {
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -19,7 +19,7 @@ let get_all_users: (req: Request, res: Response, next: NextFunction) => any = (
   next();
 };
 
-let get_specific_user: (
+export let get_specific_user: (
   req: Request,
   res: Response,
   next: NextFunction
@@ -43,9 +43,4 @@ let get_specific_user: (
   } else {
     next();
   }
-};
-
-module.exports = {
-  get_all_users,
-  get_specific_user,
 };

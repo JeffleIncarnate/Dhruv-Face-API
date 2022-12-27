@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import { pool } from "../../core/database/pool";
 const bcrypt_compare = require("../../core/bcrypt/compare");
 const authenticate_token = require("../../core/authentication/auth");
-const middleware = require("../../core/middleware/post_middleware");
+import { user_login } from "../../core/middleware/post_middleware";
 
 let router = express.Router();
 
@@ -17,7 +17,7 @@ type UserLogin = {
 router.post(
   "/",
   authenticate_token,
-  middleware.user_login,
+  user_login,
   async (req: Request, res: Response) => {
     let body = req.body;
 

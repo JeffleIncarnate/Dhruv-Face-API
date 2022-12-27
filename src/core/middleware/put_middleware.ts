@@ -2,11 +2,11 @@ import { Request, Response, NextFunction } from "express";
 
 const decode_token = require("../jwt/decrypt_token");
 
-let update_user: (req: Request, res: Response, next: NextFunction) => any = (
+export let update_user: (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+) => any = (req: Request, res: Response, next: NextFunction) => {
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 

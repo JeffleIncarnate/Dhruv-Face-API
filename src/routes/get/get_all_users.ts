@@ -2,14 +2,14 @@ import express, { Request, Response } from "express";
 
 import { pool } from "../../core/database/pool";
 const authenticate_token = require("../../core/authentication/auth");
-const middleware = require("../../core/middleware/get_middleware");
+import { get_all_users } from "../../core/middleware/get_middleware";
 
 let router = express.Router();
 
 router.get(
   "/",
   authenticate_token,
-  middleware.get_all_users,
+  get_all_users,
   (req: Request, res: Response) => {
     let query_select_all = "SELECT * FROM users";
 

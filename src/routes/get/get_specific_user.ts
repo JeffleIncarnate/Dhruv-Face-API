@@ -2,14 +2,14 @@ import express, { Request, Response } from "express";
 
 import { pool } from "../../core/database/pool";
 const authenticate_token = require("../../core/authentication/auth");
-const middleware = require("../../core/middleware/get_middleware");
+import { get_specific_user } from "../../core/middleware/get_middleware";
 
 let router = express.Router();
 
 router.get(
   "/",
   authenticate_token,
-  middleware.get_specific_user,
+  get_specific_user,
   (req: Request, res: Response) => {
     let username = req.query.username;
 

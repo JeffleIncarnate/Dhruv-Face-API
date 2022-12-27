@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import { pool } from "../../core/database/pool";
 const bcrypt_compare = require("../../core/bcrypt/compare");
 const authenticate_token = require("../../core/authentication/auth");
-const middleware = require("../../core/middleware/delete_middleware");
+import { delete_user } from "../../core/middleware/delete_middleware";
 
 let router = express.Router();
 
@@ -18,7 +18,7 @@ type UserDelete = {
 router.delete(
   "/",
   authenticate_token,
-  middleware.delete_user,
+  delete_user,
   (req: Request, res: Response) => {
     let body = req.body;
 

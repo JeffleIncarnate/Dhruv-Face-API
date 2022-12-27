@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 const roles = require("../data/roles");
 const decode_token = require("../jwt/decrypt_token");
 
-let check_role_basic_or_higher: (
+export let check_role_basic_or_higher: (
   req: Request,
   res: Response,
   next: NextFunction
@@ -19,8 +19,4 @@ let check_role_basic_or_higher: (
       .send({ detail: "Role must be higher than CREATE_USER" });
 
   next();
-};
-
-module.exports = {
-  check_role_basic_or_higher,
 };

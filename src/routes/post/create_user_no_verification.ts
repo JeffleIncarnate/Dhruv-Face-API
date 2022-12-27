@@ -6,7 +6,7 @@ import { pool } from "../../core/database/pool";
 const roles = require("../../core/data/roles");
 const bcrypt_hash = require("../../core/bcrypt/hash");
 const authenticate_token = require("../../core/authentication/auth");
-const middleware = require("../../core/middleware/post_middleware");
+import { create_user_no_verification } from "../../core/middleware/post_middleware";
 
 let router = express.Router();
 
@@ -33,7 +33,7 @@ type User = {
 router.post(
   "/",
   authenticate_token,
-  middleware.create_user_no_verification,
+  create_user_no_verification,
   async (req: Request, res: Response) => {
     let body = req.body;
     let date_time_now = new Date();

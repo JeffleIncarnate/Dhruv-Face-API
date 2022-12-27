@@ -4,7 +4,7 @@ const roles = require("../data/roles");
 import { pool } from "../database/pool";
 const decode_token = require("../jwt/decrypt_token");
 
-let verify_password: (
+export let verify_password: (
   username: string,
   normal_password: string
 ) => Promise<boolean> = async (username: string, hashed_password: string) => {
@@ -16,7 +16,7 @@ let verify_password: (
   return hashed_password === sql_res.rows[0].password ? true : false;
 };
 
-let create_post: (
+export let create_post: (
   req: Request,
   res: Response,
   next: NextFunction
@@ -31,7 +31,7 @@ let create_post: (
   next();
 };
 
-let create_user_no_verification: (
+export let create_user_no_verification: (
   req: Request,
   res: Response,
   next: NextFunction
@@ -47,11 +47,11 @@ let create_user_no_verification: (
   next();
 };
 
-let create_user: (req: Request, res: Response, next: NextFunction) => any = (
+export let create_user: (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+) => any = (req: Request, res: Response, next: NextFunction) => {
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -63,11 +63,11 @@ let create_user: (req: Request, res: Response, next: NextFunction) => any = (
   next();
 };
 
-let user_login: (req: Request, res: Response, next: NextFunction) => any = (
+export let user_login: (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+) => any = (req: Request, res: Response, next: NextFunction) => {
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -78,7 +78,7 @@ let user_login: (req: Request, res: Response, next: NextFunction) => any = (
     : res.status(400).send({ detail: "Token is the same as user" });
 };
 
-let verify_email_create_user: (
+export let verify_email_create_user: (
   req: Request,
   res: Response,
   next: NextFunction
@@ -101,10 +101,18 @@ let verify_email_create_user: (
   next();
 };
 
-module.exports = {
-  create_post,
-  create_user_no_verification,
-  create_user,
-  user_login,
-  verify_email_create_user,
+export let create_admin: (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => any = (req: Request, res: Response, next: NextFunction) => {
+  let authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  let decode = decode_token(token).role;
+
+  if (decode !== roles.GOD)
+    return res.status(401).send({ detail: "You need to be GOD" });
+
+  next();
 };

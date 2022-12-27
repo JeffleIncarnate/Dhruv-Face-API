@@ -4,7 +4,7 @@ import { pool } from "../../core/database/pool";
 const roles = require("../../core/data/roles");
 const authenticate_token = require("../../core/authentication/auth");
 const decode_token = require("../../core/jwt/decrypt_token");
-const middleware = require("../../core/middleware/post_middleware");
+import { create_user } from "../../core/middleware/post_middleware";
 
 let router = express.Router();
 
@@ -31,7 +31,7 @@ type User = {
 router.post(
   "/",
   authenticate_token,
-  middleware.create_user,
+  create_user,
   async (req: Request, res: Response) => {
     let authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];

@@ -3,11 +3,11 @@ import { Request, Response, NextFunction } from "express";
 const roles = require("../data/roles");
 const decode_token = require("../jwt/decrypt_token");
 
-let delete_user: (req: Request, res: Response, next: NextFunction) => any = (
+export let delete_user: (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+) => any = (req: Request, res: Response, next: NextFunction) => {
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -22,8 +22,4 @@ let delete_user: (req: Request, res: Response, next: NextFunction) => any = (
       .status(401)
       .send({ detial: "Token must be the same as the user being deleated." });
   }
-};
-
-module.exports = {
-  delete_user,
 };

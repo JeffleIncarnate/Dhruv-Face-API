@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import { pool } from "../../core/database/pool";
 const bcrypt_compare = require("../../core/bcrypt/compare");
 const authenticate_token = require("../../core/authentication/auth");
-const middleware = require("../../core/middleware/put_middleware");
+import { update_user } from "../../core/middleware/put_middleware";
 
 let router = express.Router();
 
@@ -19,7 +19,7 @@ type User = {
 router.put(
   "/",
   authenticate_token,
-  middleware.update_user,
+  update_user,
   async (req: Request, res: Response) => {
     let column_exists = false;
 

@@ -7,7 +7,7 @@ const roles = require("../../core/data/roles");
 const bcrypt_hash = require("../../core/bcrypt/hash");
 const authenticate_token = require("../../core/authentication/auth");
 const create_token = require("../../core/jwt/create_token");
-const middleware = require("../../core/middleware/post_middleware");
+import { verify_email_create_user } from "../../core/middleware/post_middleware";
 
 let router = express.Router();
 
@@ -34,7 +34,7 @@ type User = {
 router.post(
   "/",
   authenticate_token,
-  middleware.verify_email_create_user,
+  verify_email_create_user,
   async (req: Request, res: Response) => {
     let body = req.body;
     let date_time_now = new Date();

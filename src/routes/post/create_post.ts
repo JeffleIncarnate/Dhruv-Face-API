@@ -4,7 +4,7 @@ const upload = multer({ dest: "uploads/" });
 
 import { pool } from "../../core/database/pool";
 const authenticate_token = require("../../core/authentication/auth");
-const middleware = require("../../core/middleware/post_middleware");
+import { create_post } from "../../core/middleware/post_middleware";
 
 let router = express.Router();
 
@@ -22,7 +22,7 @@ type Post = {
 router.post(
   "/",
   authenticate_token,
-  middleware.create_post,
+  create_post,
   upload.array("files"),
   (req: Request | any, res: Response) => {
     let post: Post = {
