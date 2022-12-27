@@ -10,27 +10,27 @@ router.get(
   "/",
   authenticate_token,
   get_specific_user,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     let username = req.query.username;
 
     if (username === "" || username === undefined)
       res.status(400).send({ detail: "Provide username" });
 
-    let query_select_user = "SELECT * FROM users WHERE username=$1";
-    let values_select_user = [username];
+    const query_select_user = "SELECT * FROM users WHERE username=$1";
+    const values_select_user = [username];
 
-    pool.query(
-      query_select_user,
-      values_select_user,
-      (err: any, sql_res: any) => {
-        if (err) return res.status(500).send({ detail: err.stack });
+    let sql_res_select;
 
-        if (sql_res.rowCount === 0)
-          return res.status(404).send({ detail: "User not found" });
+    try {
+      sql_res_select = await pool.query(query_select_user, values_select_user);
+    } catch (err: any) {
+      return res.status(500).send({ detail: err.stack });
+    }
 
-        return res.send(sql_res.rows[0]);
-      }
-    );
+    if (sql_res_select.rowCount === 0)
+      return res.status(404).send({ detail: "User not found" });
+
+    return res.send(sql_res_select.rows[0]);
   }
 );
 

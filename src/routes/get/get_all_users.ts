@@ -10,14 +10,17 @@ router.get(
   "/",
   authenticate_token,
   get_all_users,
-  (req: Request, res: Response) => {
-    let query_select_all = "SELECT * FROM users";
+  async (req: Request, res: Response) => {
+    const query_select_all = "SELECT * FROM users";
+    let sql_res;
 
-    pool.query(query_select_all, (err: any, sql_res: any) => {
-      if (err) return res.status(500).send({ detail: err.stack });
+    try {
+      sql_res = await pool.query(query_select_all);
+    } catch (err: any) {
+      return res.status(500).send({ detail: err.stack });
+    }
 
-      res.send(sql_res.rows);
-    });
+    return res.send(sql_res.rows);
   }
 );
 
