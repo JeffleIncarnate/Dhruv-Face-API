@@ -88,10 +88,12 @@ export let verify_email_create_user: (
 
   let decode = decode_token(token);
 
+  if (decode.role === roles.GOD || decode.role === roles.ADMIN) return next();
+
   if (decode.username !== req.body.username)
-    return res
-      .status(400)
-      .send({ detail: "Body username is not the same as the token username" });
+    return res.status(400).send({
+      detail: "Body username is not the same as the token username",
+    });
 
   if (decode.role !== roles.CREATE_USER)
     return res

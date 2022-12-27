@@ -19,7 +19,7 @@ router.delete(
   "/",
   authenticate_token,
   delete_user,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     let body = req.body;
 
     let user: UserDelete = {
@@ -34,44 +34,39 @@ router.delete(
         return res.status(400).send({ detail: "Provide all items" });
     }
 
-    let query_select_password = "SELECT password FROM users WHERE username=$1";
-    let values_select_password = [user.username];
+    let sql_res_select;
 
-    pool.query(
-      query_select_password,
-      values_select_password,
-      async (err_select_password: any, sql_res_select_password: any) => {
-        if (err_select_password)
-          return res.status(500).send({ detail: err_select_password.stack });
+    const query_select_password =
+      "SELECT password FROM users WHERE username=$1";
+    const values_select_password = [user.username];
 
-        if (sql_res_select_password.rowCount === 0)
-          return res.status(400).send({ detail: "User does not exist" });
+    try {
+      sql_res_select = await pool.query(
+        query_select_password,
+        values_select_password
+      );
+    } catch (err: any) {
+      return res.status(500).send({ detail: err.stack });
+    }
 
-        if (
-          !(await bcrypt_compare(
-            user.password,
-            sql_res_select_password.rows[0].password
-          ))
-        )
-          return res.status(401).send({ detail: "Incorrect password" });
+    if (sql_res_select.rowCount === 0)
+      return res.status(400).send({ detail: "User does not exist" });
 
-        let query_delete_user = "DELETE FROM users WHERE username=$1";
-        let values_delete_user = [user.username];
+    if (!(await bcrypt_compare(user.password, sql_res_select.rows[0].password)))
+      return res.status(401).send({ detail: "Incorrect password" });
 
-        pool.query(
-          query_delete_user,
-          values_delete_user,
-          (err_delete_user: any, sql_res_delete_user: any) => {
-            if (err_delete_user)
-              return res.status(500).send({ detail: err_delete_user.stack });
+    let query_delete_user = "DELETE FROM users WHERE username=$1";
+    let values_delete_user = [user.username];
 
-            return res
-              .status(200)
-              .send({ detail: `Successfully deleted ${user.username}` });
-          }
-        );
-      }
-    );
+    try {
+      pool.query(query_delete_user, values_delete_user);
+    } catch (err: any) {
+      return res.status(500).send({ detail: err.stack });
+    }
+
+    return res
+      .status(200)
+      .send({ detail: `Successfully deleted ${user.username}` });
   }
 );
 
