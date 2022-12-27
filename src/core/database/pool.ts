@@ -17,7 +17,3 @@ export const pool: PoolClient = new Pool({
   password: password,
   port: port,
 });
-
-pool.resumeDrain();
-pool.pauseDrain();
-// cause a pool
