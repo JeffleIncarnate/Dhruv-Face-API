@@ -30,6 +30,11 @@ type User = {
   join_date: string;
 };
 
+/**
+ * Creates a token with jwt and 64 random bytes :)))
+ * @param  {UserToken | PostUser | User} user      Not the hashed password
+ * @return {string}                                Returns a token
+ */
 export let create_token: (user: UserToken | PostUser | User) => any = (
   user: UserToken | PostUser
 ) => {
