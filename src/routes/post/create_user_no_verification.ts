@@ -2,11 +2,10 @@ import express, { Request, Response, NextFunction } from "express";
 import { v4 as uuidv4 } from "uuid";
 import date from "date-and-time";
 
-const pool = require("../../core/database/pool");
+import { pool } from "../../core/database/pool";
 const roles = require("../../core/data/roles");
 const bcrypt_hash = require("../../core/bcrypt/hash");
 const authenticate_token = require("../../core/authentication/auth");
-const decode_token = require("../../core/jwt/decrypt_token");
 const middleware = require("../../core/middleware/post_middleware");
 
 let router = express.Router();

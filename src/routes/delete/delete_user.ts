@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 
-const pool = require("../../core/database/pool");
+import { pool } from "../../core/database/pool";
 const bcrypt_compare = require("../../core/bcrypt/compare");
 const authenticate_token = require("../../core/authentication/auth");
 const middleware = require("../../core/middleware/delete_middleware");

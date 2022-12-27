@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
-const pool = require("../../core/database/pool");
+import { pool } from "../../core/database/pool";
 const authenticate_token = require("../../core/authentication/auth");
 const middleware = require("../../core/middleware/post_middleware");
 

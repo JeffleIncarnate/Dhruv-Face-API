@@ -1,4 +1,5 @@
 const { Pool } = require("pg");
+import { PoolClient } from "pg";
 require("dotenv").config({ path: `${__dirname}/../../.env` });
 
 // Connection string
@@ -9,7 +10,7 @@ const password = process.env.PASSWORD;
 const port = process.env.PORT;
 
 // Creating the pool:
-const pool = new Pool({
+export const pool: PoolClient = new Pool({
   user: user,
   host: host,
   database: database,
@@ -17,5 +18,6 @@ const pool = new Pool({
   port: port,
 });
 
-// Then we are exporting it for other files to use.
-module.exports = pool;
+pool.resumeDrain();
+pool.pauseDrain();
+// cause a pool

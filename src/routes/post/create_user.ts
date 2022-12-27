@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 
-const pool = require("../../core/database/pool");
+import { pool } from "../../core/database/pool";
 const roles = require("../../core/data/roles");
 const authenticate_token = require("../../core/authentication/auth");
 const decode_token = require("../../core/jwt/decrypt_token");

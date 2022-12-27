@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 const roles = require("../data/roles");
-const pool = require("../database/pool");
+import { pool } from "../database/pool";
 const decode_token = require("../jwt/decrypt_token");
 
 let verify_password: (
@@ -11,11 +11,7 @@ let verify_password: (
   let query_verify_password = "SELECT password FROM users WHERE username=$1";
   let values_verify_password = [username];
 
-  let sql_res = await pool
-    .query(query_verify_password, values_verify_password)
-    .catch((err: any) => {
-      return false;
-    });
+  let sql_res = await pool.query(query_verify_password, values_verify_password);
 
   return hashed_password === sql_res.rows[0].password ? true : false;
 };

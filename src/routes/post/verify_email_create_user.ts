@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import date from "date-and-time";
 
-const pool = require("../../core/database/pool");
+import { pool } from "../../core/database/pool";
 const roles = require("../../core/data/roles");
 const bcrypt_hash = require("../../core/bcrypt/hash");
 const authenticate_token = require("../../core/authentication/auth");

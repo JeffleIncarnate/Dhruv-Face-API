@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 require("dotenv").config({ path: "../../.env" });
 
-let pool = require("../database/pool");
+import { pool } from "../database/pool";
 let bcrypt_compare = require("../bcrypt/compare");
 let roles = require("../data/roles");
 let create_token = require("../jwt/create_token");
