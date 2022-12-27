@@ -25,6 +25,7 @@ const create_post = require("./routes/post/create_post");
 
 // Routes -- DELETE
 const delete_user = require("./routes/delete/delete_user");
+const delete_admin = require("./routes/delete/delete_admin");
 
 // ---------------------------- //
 
@@ -56,6 +57,7 @@ app.use("/post/create_post", create_post);
 
 // Use Routes -- DELETE
 app.use("/delete/delete_user", delete_user);
+app.use("/delete/delete_admin", delete_admin);
 
 // ---------------------------- //
 

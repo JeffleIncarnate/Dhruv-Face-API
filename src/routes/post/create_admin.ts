@@ -88,6 +88,9 @@ router.post(
 
     try {
       await pool.query(query_insert_admin, values_insert_admin);
+      return res.status(201).send({
+        detail: `Successfully created admin with username "${user.username}"`,
+      });
     } catch (err: any) {
       return res.status(500).send({ detail: err.stack });
     }

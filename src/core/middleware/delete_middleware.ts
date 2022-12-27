@@ -23,3 +23,21 @@ export let delete_user: (
       .send({ detial: "Token must be the same as the user being deleated." });
   }
 };
+
+export let delete_admin: (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => any = (req: Request, res: Response, next: NextFunction) => {
+  let authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  let decode = decode_token(token!);
+
+  if (decode.role !== roles.GOD)
+    return res
+      .status(401)
+      .send({ detail: "You need to be GOD to access this endpoint" });
+
+  next();
+};

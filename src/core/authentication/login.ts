@@ -25,7 +25,9 @@ type Token = {
   token: string;
 };
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/admin", async (req: Request, res: Response) => {});
+
+router.post("/user", async (req: Request, res: Response) => {
   let query_get_password = "select password, role from users where username=$1";
   let values_get_password = [req.body.username];
 
